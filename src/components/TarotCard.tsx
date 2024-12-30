@@ -11,7 +11,7 @@ type TarotCardProps = {
   isReversed: boolean;
 };
 
-const imagePaths: {
+export const imagePaths: {
   [key: string]: any;
 } = {
   fool: require("assets/images/cards/fool.webp"),

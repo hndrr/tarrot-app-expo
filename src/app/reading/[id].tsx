@@ -116,9 +116,13 @@ export default function Reading() {
         <TarotCard card={card} isReversed={isReversed} />
         <Pressable
           onPress={() =>
-            navigation.navigate("CardDetails", {
-              id: card.id,
-              reversed: isReversed,
+            router.replace({
+              pathname: "/details/[id]",
+              params: {
+                id: card.id,
+                reversed: reversed,
+                back: "false",
+              },
             })
           }
           className="mt-4 px-6 py-3 rounded-full bg-purple-600 hover:bg-purple-700"
@@ -138,7 +142,7 @@ export default function Reading() {
           onPress={() => navigation.navigate("index")}
           className="px-6 py-3 rounded-full text-purple-300 hover:text-purple-100"
         >
-          <Text className="text-center">トップに戻る</Text>
+          <Text className="text-center text-white">トップに戻る</Text>
         </Pressable>
       </View>
     </LinearGradient>
