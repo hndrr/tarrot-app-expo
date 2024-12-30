@@ -39,8 +39,9 @@ export default function RootLayout() {
         screenOptions={{
           headerShown: false, // 全ての画面でヘッダーを隠す
         }}
+        initialRouteName="index"
       >
-        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="index" />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />

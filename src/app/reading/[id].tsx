@@ -4,10 +4,11 @@ import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { TarotCard } from "components/TarotCard"; // TarotCardコンポーネントをNative版に合わせて作成
 import { tarotCards } from "data/tarotCards";
+import { useRouter } from "expo-router";
 
 // Routeの型定義
 type ReadingRouteParams = {
-  Reading: {
+  reading: {
     id: string;
     reversed?: string;
     back?: boolean;
@@ -16,7 +17,7 @@ type ReadingRouteParams = {
     id: number;
     reversed: boolean;
   };
-  Index: undefined;
+  index: undefined;
 };
 
 type Card = {
@@ -32,7 +33,8 @@ type NavigationProps = {
 };
 
 export default function Reading() {
-  const route = useRoute<RouteProp<ReadingRouteParams, "Reading">>();
+  const router = useRouter();
+  const route = useRoute<RouteProp<ReadingRouteParams, "reading">>();
   const navigation = useNavigation<NavigationProps>();
   const { id, reversed, back } = route.params || {};
   const [loading, setLoading] = useState(true);
@@ -72,7 +74,7 @@ export default function Reading() {
       >
         <Text className="text-lg text-white">カードが見つかりません</Text>
         <Pressable
-          onPress={() => navigation.navigate("Index")}
+          onPress={() => navigation.navigate("index")}
           className="mt-4 px-4 py-2 rounded-full bg-purple-600 hover:bg-purple-700"
         >
           <Text className="text-white">トップに戻る</Text>
@@ -82,6 +84,19 @@ export default function Reading() {
   }
 
   const isReversed = reversed === "true";
+
+  const drawCard = () => {
+    const randomIndex = Math.floor(Math.random() * tarotCards.length);
+    const selectedCard = tarotCards[randomIndex];
+    router.replace({
+      pathname: "/reading/[id]",
+      params: {
+        id: selectedCard.id,
+        reversed: Math.random() < 0.5 ? "true" : "false",
+        back: "false",
+      },
+    });
+  };
 
   return (
     <LinearGradient
@@ -114,19 +129,13 @@ export default function Reading() {
 
       <View className="gap-4">
         <Pressable
-          onPress={() =>
-            navigation.replace("Reading", {
-              id: tarotCards[Math.floor(Math.random() * tarotCards.length)].id,
-              reversed: Math.random() < 0.5,
-              back: false,
-            })
-          }
+          onPress={drawCard}
           className="px-6 py-3 rounded-full bg-slate-600 hover:bg-slate-700"
         >
           <Text className="text-white text-center">もう一度引く</Text>
         </Pressable>
         <Pressable
-          onPress={() => navigation.navigate("Index")}
+          onPress={() => navigation.navigate("index")}
           className="px-6 py-3 rounded-full text-purple-300 hover:text-purple-100"
         >
           <Text className="text-center">トップに戻る</Text>

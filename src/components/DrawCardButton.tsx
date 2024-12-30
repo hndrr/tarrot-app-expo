@@ -9,7 +9,15 @@ export default function DrawCardButton() {
   const drawCard = () => {
     const randomIndex = Math.floor(Math.random() * tarotCards.length);
     const selectedCard = tarotCards[randomIndex];
-    router.push(`/reading/${selectedCard.id}`);
+    // router.push(`/reading/${selectedCard.id}`);
+    router.replace({
+      pathname: "/reading/[id]",
+      params: {
+        id: selectedCard.id,
+        reversed: Math.random() < 0.5 ? "true" : "false",
+        back: "false",
+      },
+    });
   };
 
   return (
