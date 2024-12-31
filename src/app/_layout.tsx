@@ -8,13 +8,11 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
-import "react-native-reanimated";
-
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useColorScheme } from "hooks/useColorScheme";
 
 import "../global.css";
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -35,16 +33,28 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack
-        screenOptions={{
-          headerShown: false, // 全ての画面でヘッダーを隠す
-        }}
-        initialRouteName="index"
-      >
-        <Stack.Screen name="index" />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
+      <SafeAreaProvider>
+        <SafeAreaView
+          style={{
+            flex: 1,
+            backgroundColor:
+              colorScheme === "dark"
+                ? DarkTheme.colors.background
+                : DefaultTheme.colors.background,
+          }}
+        >
+          <Stack
+            screenOptions={{
+              headerShown: false, // 全ての画面でヘッダーを隠す
+            }}
+            initialRouteName="index"
+          >
+            <Stack.Screen name="index" />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+          <StatusBar style="auto" />
+        </SafeAreaView>
+      </SafeAreaProvider>
     </ThemeProvider>
   );
 }
