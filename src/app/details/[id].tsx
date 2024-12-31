@@ -124,9 +124,9 @@ export default function CardDetail() {
             </View>
 
             <View className="flex-1">
-              <Text className="text-4xl font-bold mb-4 text-white">
-                {card.name}
-                <Text className="ml-2 text-2xl font-normal">
+              <Text className="mb-4 text-white text-center">
+                <Text className="text-3xl font-bold">{card.name} </Text>
+                <Text className="text-2xl font-normal">
                   {isReversed ? `逆位置` : `正位置`}
                 </Text>
               </Text>
