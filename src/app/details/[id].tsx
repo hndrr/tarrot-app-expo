@@ -12,6 +12,7 @@ import { tarotCards } from "data/tarotCards";
 import { imagePaths } from "components/TarotCard";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import { generateTarotMessage } from "lib/generateTarotMessage";
 
 // Routeの型定義
 type ReadingRouteParams = {
@@ -45,12 +46,29 @@ export default function CardDetail() {
   const { id, reversed } = route.params as { id: string; reversed?: string };
   const [loading, setLoading] = useState(true);
   const [card, setCard] = useState<Card | null>(null);
+  const [tarotMessage, setTarotMessage] = useState<{
+    upright: string;
+    reversed: string;
+  } | null>(null);
   const resolvedImage = card ? imagePaths[card.image] : null;
 
   useEffect(() => {
-    const fetchCard = () => {
+    const fetchCard = async () => {
       const foundCard = tarotCards.find((card) => card.id === parseInt(id));
       setCard(foundCard || null);
+
+      if (foundCard) {
+        try {
+          const message = await generateTarotMessage(
+            foundCard.name,
+            foundCard.meaning
+          );
+          setTarotMessage(message);
+        } catch (error) {
+          console.error("文言生成エラー:", error);
+        }
+      }
+
       setLoading(false);
     };
 
@@ -141,20 +159,14 @@ export default function CardDetail() {
                 <View className="space-y-4">
                   <View>
                     <Text className="font-semibold text-purple-300">
-                      正位置
+                      {isReversed ? "逆位置" : "正位置"}
                     </Text>
                     <Text className="text-gray-200">
-                      {card.meaning}{" "}
-                      の状態が強く現れています。前向きな意味として解釈できます。
-                    </Text>
-                  </View>
-                  <View>
-                    <Text className="font-semibold text-purple-300">
-                      逆位置
-                    </Text>
-                    <Text className="text-gray-200">
-                      {card.meaning}{" "}
-                      の状態が停滞または阻害されている可能性があります。注意が必要かもしれません。
+                      {tarotMessage
+                        ? isReversed
+                          ? tarotMessage.reversed
+                          : tarotMessage.upright
+                        : "生成中..."}
                     </Text>
                   </View>
                 </View>

@@ -40,3 +40,4 @@ ios/.gitignore
 ios/*
 android/.gitignore
 android/*
+.env
