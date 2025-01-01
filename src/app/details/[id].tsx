@@ -12,7 +12,7 @@ import { tarotCards } from "data/tarotCards";
 import { imagePaths } from "components/TarotCard";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { generateTarotMessage } from "lib/generateTarotMessage";
+import { generateTarotMessage } from "lib/generateTarotMessageGemini";
 
 // Routeの型定義
 type ReadingRouteParams = {
