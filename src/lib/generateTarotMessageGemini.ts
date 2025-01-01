@@ -14,7 +14,7 @@ export const generateTarotMessage = async (name: string, meaning: string) => {
 `;
 
   const geminiApiEndpoint =
-    "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-002:generateContent";
   const schema = {
     description: "タロットカードの正位置と逆位置の文言を生成する",
     type: "ARRAY",
