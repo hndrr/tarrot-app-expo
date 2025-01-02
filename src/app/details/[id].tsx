@@ -158,9 +158,6 @@ export default function CardDetail() {
                 </Text>
                 <View className="space-y-4">
                   <View>
-                    <Text className="font-semibold text-purple-300">
-                      {isReversed ? "逆位置" : "正位置"}
-                    </Text>
                     <Text className="text-gray-200">
                       {tarotMessage
                         ? isReversed

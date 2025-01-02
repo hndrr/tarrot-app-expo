@@ -1,4 +1,4 @@
-import { SchemaType } from "@google/generative-ai";
+import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import axios from "axios";
 interface TarotResponse {
   upright: string;
@@ -9,12 +9,16 @@ export const generateTarotMessage = async (name: string, meaning: string) => {
   const prompt = `
 あなたはタロットカード占い師です。
 
-タロットカード「${name}」に基づいてキーワードを含む正位置と逆位置の解釈文を生成し、アドバイスしてください。
+タロットカード「${name}」に基づいて正位置と逆位置の文言を生成してください。
 キーワード: ${meaning}
 `;
+  const api_token = process.env.EXPO_PUBLIC_GEMINI_API_KEY || "";
+  const account_id = process.env.EXPO_PUBLIC_CLOUDFLARE_ACCOUNT_ID || "";
+  const gateway_name = process.env.EXPO_PUBLIC_CLOUDFLARE_GATEWAY_NAME || "";
 
   const geminiApiEndpoint =
-    "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-002:generateContent";
+    // "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-002:generateContent";
+    `https://gateway.ai.cloudflare.com/v1/${account_id}/${gateway_name}/google-ai-studio/v1/models/gemini-1.5-flash-002:generateContent`;
 
   const schema = {
     description: "タロットカードの正位置と逆位置の文言を生成する",
@@ -66,15 +70,15 @@ export const generateTarotMessage = async (name: string, meaning: string) => {
             parts: [{ text: prompt }],
           },
         ],
-        generationConfig: {
-          response_mime_type: "application/json",
-          response_schema: schema,
-        },
+        // generationConfig: {
+        //   response_mime_type: "application/json",
+        //   response_schema: schema,
+        // },
       },
       {
         headers: {
           "Content-Type": "application/json",
-          "x-goog-api-key": process.env.EXPO_PUBLIC_GEMINI_API_KEY,
+          "x-goog-api-key": api_token,
         },
       }
     );
@@ -86,6 +90,7 @@ export const generateTarotMessage = async (name: string, meaning: string) => {
     console.log(tarotResponse);
 
     return tarotResponse;
+    return "";
   } catch (error) {
     console.error("文言生成エラー:", error);
     if (error instanceof Error) {
