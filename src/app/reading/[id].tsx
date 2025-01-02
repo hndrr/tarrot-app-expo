@@ -12,7 +12,6 @@ import { TarotCard } from "components/TarotCard"; // TarotCardコンポーネン
 import { tarotCards } from "data/tarotCards";
 import { useRouter } from "expo-router";
 import { TarotLoading } from "components/TarotLoading";
-import { delay } from "lib/delay";
 
 // Routeの型定義
 type ReadingRouteParams = {
