@@ -11,13 +11,15 @@ import { LinearGradient } from "expo-linear-gradient";
 import { TarotCard } from "components/TarotCard"; // TarotCardコンポーネントをNative版に合わせて作成
 import { tarotCards } from "data/tarotCards";
 import { useRouter } from "expo-router";
+import { TarotLoading } from "components/TarotLoading";
+import { delay } from "lib/delay";
 
 // Routeの型定義
 type ReadingRouteParams = {
   reading: {
     id: string;
     reversed?: string;
-    back?: boolean;
+    back?: string;
   };
   CardDetails: {
     id: number;
@@ -45,10 +47,12 @@ export default function Reading() {
   const { id, reversed, back } = route.params || {};
   const [loading, setLoading] = useState(true);
   const [card, setCard] = useState<Card | null>(null);
+  const isReversed = reversed === "true";
+  const isBack = back === "true";
 
   useEffect(() => {
     const fetchCard = async () => {
-      if (!back) {
+      if (!isBack) {
         await new Promise((resolve) => setTimeout(resolve, 6000)); // 6秒の遅延
       }
       // foundCardがundefinedの場合にnullを設定
@@ -61,15 +65,7 @@ export default function Reading() {
   }, [id, back]);
 
   if (loading) {
-    return (
-      <LinearGradient
-        colors={["#5b21b6", "#4338ca"]}
-        className="flex-1 justify-center items-center"
-      >
-        <ActivityIndicator size="large" color="#ffffff" />
-        <Text className="mt-4 text-lg text-white">カードを引いています...</Text>
-      </LinearGradient>
-    );
+    return <TarotLoading />;
   }
 
   if (!card) {
@@ -88,8 +84,6 @@ export default function Reading() {
       </LinearGradient>
     );
   }
-
-  const isReversed = reversed === "true";
 
   const drawCard = () => {
     const randomIndex = Math.floor(Math.random() * tarotCards.length);

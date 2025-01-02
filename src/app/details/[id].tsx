@@ -19,7 +19,7 @@ type ReadingRouteParams = {
   reading: {
     id: string;
     reversed?: string;
-    back?: boolean;
+    back?: string;
   };
   CardDetails: {
     id: number;
@@ -51,6 +51,7 @@ export default function CardDetail() {
     reversed: string;
   } | null>(null);
   const resolvedImage = card ? imagePaths[card.image] : null;
+  const isReversed = reversed === "true";
 
   useEffect(() => {
     const fetchCard = async () => {
@@ -105,8 +106,6 @@ export default function CardDetail() {
       </LinearGradient>
     );
   }
-
-  const isReversed = reversed === "true";
 
   return (
     <LinearGradient colors={["#1e293b", "#4338ca"]} className="flex-1">
