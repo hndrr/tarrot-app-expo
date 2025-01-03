@@ -13,6 +13,10 @@
       "bundleIdentifier": "com.hndr.tarrotappexpo"
     },
     "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/images/icon.png",
+        "backgroundColor": "#ffffff"
+      },
       "package": "com.hndr.tarrotappexpo"
     },
     "web": {
